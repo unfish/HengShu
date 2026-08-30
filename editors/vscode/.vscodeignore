@@ -1,0 +1,4 @@
+.vscode/**
+*.vsix
+README.md
+../../target/**

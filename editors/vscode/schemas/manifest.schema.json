@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hengshu-lang.github.io/schemas/manifest.schema.json",
+  "title": "衡枢项目清单",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["项目"],
+  "properties": {
+    "项目": {"$ref": "#/$defs/project"},
+    "依赖": {"type": "object", "additionalProperties": {"$ref": "#/$defs/dependency"}},
+    "权限": {"$ref": "#/$defs/permissions"},
+    "工具": {"type": "object", "additionalProperties": {"$ref": "#/$defs/tool"}},
+    "自动化": {"type": "object", "additionalProperties": {"$ref": "#/$defs/automation"}}
+  },
+  "$defs": {
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["名称", "版本", "入口"],
+      "properties": {
+        "名称": {"type": "string", "minLength": 1},
+        "版本": {"type": "string", "minLength": 1},
+        "入口": {"type": "string", "pattern": "\\.代码$"},
+        "许可证": {"type": "string"}
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["路径"],
+      "properties": {
+        "路径": {"type": "string", "minLength": 1},
+        "版本": {"type": "string"},
+        "校验固定": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"}
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "文件": {"type": "array", "items": {"type": "string"}},
+        "网络": {"type": "array", "items": {"type": "string"}},
+        "环境": {"type": "array", "items": {"type": "string"}},
+        "允许子进程": {"type": "boolean"},
+        "最大输出字节": {"type": "integer", "minimum": 1},
+        "最大集合项数": {"type": "integer", "minimum": 1},
+        "最大缓冲字节": {"type": "integer", "minimum": 1},
+        "最大调用深度": {"type": "integer", "minimum": 1},
+        "最大值嵌套深度": {"type": "integer", "minimum": 1},
+        "最大模块深度": {"type": "integer", "minimum": 1},
+        "最大通道容量": {"type": "integer", "minimum": 1},
+        "最大并行工作者": {"type": "integer", "minimum": 1},
+        "允许敏感类别": {"type": "array", "items": {"type": "string"}},
+        "允许端点": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "tool": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["version", "name", "entry"],
+      "properties": {
+        "version": {"type": "integer", "minimum": 1},
+        "name": {"type": "string", "minLength": 1},
+        "tool_version": {"type": "string"},
+        "entry": {"type": "string", "pattern": "\\.代码$"},
+        "parameters": {"type": "array"},
+        "cli": {"type": "object"},
+        "gui": {"type": "object"}
+      }
+    },
+    "automation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["时区", "触发"],
+      "properties": {
+        "时区": {"type": "string", "minLength": 1},
+        "触发": {"type": "object", "minProperties": 1, "maxProperties": 1},
+        "并发": {"type": "integer", "minimum": 1},
+        "队列上限": {"type": "integer", "minimum": 1},
+        "超时毫秒": {"type": "integer", "minimum": 1},
+        "重试次数": {"type": "integer", "minimum": 0},
+        "错过策略": {"enum": ["跳过", "补跑一次", "全部补跑", "Skip", "RunOnce", "CatchUp"]},
+        "重叠策略": {"enum": ["排队", "跳过", "替换", "Queue", "Skip", "Replace"]},
+        "通知": {"type": "object"},
+        "SMTP": {"type": "object"}
+      }
+    }
+  }
+}

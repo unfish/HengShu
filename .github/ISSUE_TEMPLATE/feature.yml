@@ -1,0 +1,28 @@
+name: 功能建议
+description: 描述真实用户问题和可验证使用场景
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 用户问题
+      description: 谁在什么场景遇到了什么问题？
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: 当前替代方案
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 可验证结果
+    validations:
+      required: true
+  - type: checkboxes
+    id: rfc
+    attributes:
+      label: 设计影响
+      options:
+        - label: 我已检查此建议是否需要遵循 RFC 流程

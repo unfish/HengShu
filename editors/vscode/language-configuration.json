@@ -1,0 +1,31 @@
+{
+  "$schema": "vscode://schemas/language-configuration",
+  "comments": {
+    "lineComment": "注："
+  },
+  "brackets": [
+    ["(", ")"],
+    ["[", "]"],
+    ["{", "}"]
+  ],
+  "autoClosingPairs": [
+    {"open": "(", "close": ")"},
+    {"open": "[", "close": "]"},
+    {"open": "{", "close": "}"},
+    {"open": "\"", "close": "\""},
+    {"open": "'", "close": "'"}
+  ],
+  "surroundingPairs": [
+    ["(", ")"],
+    ["[", "]"],
+    ["{", "}"],
+    ["\"", "\""],
+    ["'", "'"]
+  ],
+  "folding": {
+    "markers": {
+      "start": "^\\s*(如果|遍历|当|定义功能|匹配|尝试|测试|测试准备|每项测试前|每项测试后|测试收尾|任务组|结构).*[:：]\\s*$",
+      "end": "^\\s*结束\\s*$"
+    }
+  }
+}

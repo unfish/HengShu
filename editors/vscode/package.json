@@ -1,0 +1,45 @@
+{
+  "name": "hengshu-language",
+  "displayName": "衡枢语言支持",
+  "description": "衡枢中文财务与数据分析编程语言的语法高亮、项目清单和过程报告 schema。",
+  "version": "0.9.0",
+  "publisher": "hengshu-lang",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hengshu-lang/hengshu"
+  },
+  "engines": {
+    "vscode": ">=1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "hengshu",
+        "aliases": ["衡枢", "Hengshu"],
+        "extensions": [".代码"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "hengshu",
+        "scopeName": "source.hengshu",
+        "path": "./syntaxes/hengshu.tmLanguage.json"
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": ["过程报告.json", "*.过程报告.json"],
+        "url": "./schemas/notebook.schema.json"
+      },
+      {
+        "fileMatch": ["衡枢.toml"],
+        "url": "./schemas/manifest.schema.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,104 @@
+name: 衡枢持续集成
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 3 * * 1"
+
+jobs:
+  fast-checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --check
+      - run: cargo clippy --all-targets --all-features -- -D warnings
+      - run: bash scripts/test-fast.sh
+      - run: cargo test --doc
+      - run: cargo run --quiet -- 基准 examples/成绩分析.代码 --次数 3 --最大平均毫秒 5000
+      - run: cargo build --release
+      - run: cargo package --allow-dirty --no-verify
+
+  msrv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.98
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo check --all-targets
+
+  slow-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: bash scripts/test-slow.sh
+
+  dependency-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: taiki-e/install-action@cargo-audit
+      - uses: taiki-e/install-action@cargo-deny
+      # rkyv 是 rust_decimal 锁文件中的未启用可选功能；实际构建不包含它。
+      # quick-xml 0.30 只经 Linux 无障碍栈进入锁文件，解析本机 D-Bus introspection XML。
+      - run: cargo audit --ignore RUSTSEC-2026-0235 --ignore RUSTSEC-2026-0194 --ignore RUSTSEC-2026-0195
+      - run: cargo deny check
+
+  fuzz-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - uses: taiki-e/install-action@cargo-fuzz
+      - name: 源码管线 fuzz
+        run: cargo fuzz run source_pipeline -- -max_total_time=${{ github.event_name == 'schedule' && '60' || '5' }}
+      - name: 字节码加载 fuzz
+        run: cargo fuzz run bytecode_loader -- -max_total_time=${{ github.event_name == 'schedule' && '60' || '5' }}
+      - name: 最小化每周语料
+        if: github.event_name == 'schedule'
+        run: |
+          cargo fuzz cmin source_pipeline
+          cargo fuzz cmin bytecode_loader
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'schedule'
+        with:
+          name: fuzz-corpus-${{ github.run_id }}
+          path: |
+            fuzz/corpus/source_pipeline
+            fuzz/corpus/bytecode_loader
+            fuzz/artifacts
+          if-no-files-found: ignore
+          retention-days: 14
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: llvm-tools-preview
+      - uses: taiki-e/install-action@cargo-llvm-cov
+      - run: cargo llvm-cov --all-targets --fail-under-lines 70
+
+  test-count:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: 验证独立测试数量
+        shell: bash
+        run: |
+          count=$(cargo test --all-targets -- --list 2>/dev/null | awk '/: test$/{count++} END{print count+0}')
+          echo "独立测试数量: $count"
+          test "$count" -ge 350

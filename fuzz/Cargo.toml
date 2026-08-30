@@ -1,0 +1,26 @@
+[package]
+name = "hengshu-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+hengshu = { path = ".." }
+libfuzzer-sys = "0.4"
+
+[[bin]]
+name = "source_pipeline"
+path = "fuzz_targets/source_pipeline.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "bytecode_loader"
+path = "fuzz_targets/bytecode_loader.rs"
+test = false
+doc = false
+bench = false

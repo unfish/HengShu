@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "衡枢过程报告",
+  "description": "衡枢 Notebook 式执行过程报告（衡枢 运行 --过程报告 或 GUI 结果页保存的 JSON）。",
+  "type": "object",
+  "required": ["version", "mode", "events", "truncated"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "description": "过程报告格式版本，当前为 1。"
+    },
+    "mode": {
+      "description": "观察模式：关闭、摘要、快照或详细。",
+      "enum": ["Off", "Summary", "Snapshots", "Detailed"]
+    },
+    "truncated": {
+      "type": "boolean",
+      "description": "是否因观察预算超限而截断事件。"
+    },
+    "events": {
+      "type": "array",
+      "description": "按步号递增的执行事件；解释器按语句边界记录，VM 按指令边界记录。",
+      "items": { "$ref": "#/definitions/事件" }
+    }
+  },
+  "definitions": {
+    "事件": {
+      "type": "object",
+      "required": [
+        "version",
+        "step",
+        "stage",
+        "description",
+        "inputs",
+        "outputs",
+        "artifacts",
+        "warnings",
+        "provenance"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": { "type": "integer", "description": "执行契约版本。" },
+        "step": { "type": "integer", "minimum": 1, "description": "步号，从 1 开始递增。" },
+        "source_span": {
+          "description": "对应源码范围，缺失时为 null。",
+          "anyOf": [{ "type": "null" }, { "type": "object" }]
+        },
+        "stage": { "type": "string", "description": "阶段名，例如 statement 或 instruction。" },
+        "description": { "type": "string", "description": "中文步骤描述。" },
+        "inputs": {
+          "type": "object",
+          "description": "输入值摘要，键为名称。",
+          "additionalProperties": { "$ref": "#/definitions/值摘要" }
+        },
+        "outputs": {
+          "type": "object",
+          "description": "输出值摘要，键为名称。",
+          "additionalProperties": { "$ref": "#/definitions/值摘要" }
+        },
+        "artifacts": {
+          "type": "array",
+          "description": "本步产生的交付物名称。",
+          "items": { "type": "string" }
+        },
+        "warnings": {
+          "type": "array",
+          "description": "本步的警告文本。",
+          "items": { "type": "string" }
+        },
+        "provenance": {
+          "type": "array",
+          "description": "来源引用，指向来源图节点。",
+          "items": { "type": "object" }
+        }
+      }
+    },
+    "值摘要": {
+      "type": "object",
+      "required": ["type_name", "truncated", "metadata"],
+      "properties": {
+        "type_name": { "type": "string", "description": "值类型名。" },
+        "length": {
+          "description": "集合长度，标量为 null。",
+          "anyOf": [{ "type": "null" }, { "type": "integer" }]
+        },
+        "sample": {
+          "description": "样例文本，按敏感显示规则可能被省略。",
+          "anyOf": [{ "type": "null" }, { "type": "string" }]
+        },
+        "truncated": { "type": "boolean", "description": "样例是否被截断。" },
+        "metadata": {
+          "type": "object",
+          "description": "敏感标签、单位/口径和来源引用等元数据。"
+        }
+      }
+    }
+  }
+}

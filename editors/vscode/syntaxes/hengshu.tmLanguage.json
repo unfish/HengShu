@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "衡枢",
+  "scopeName": "source.hengshu",
+  "fileTypes": ["代码"],
+  "patterns": [
+    {"name": "comment.line.hengshu", "match": "注[:：].*$"},
+    {"name": "string.quoted.double.hengshu", "begin": "\"", "end": "\"", "patterns": [{"name": "constant.character.escape.hengshu", "match": "\\\\."}]},
+    {"name": "string.quoted.single.hengshu", "begin": "'", "end": "'", "patterns": [{"name": "constant.character.escape.hengshu", "match": "\\\\."}]},
+    {"name": "keyword.control.hengshu", "match": "(?:类型限定为|继续下一轮|参数化输出|每项测试前|每项测试后|测试准备|测试收尾|定义功能|否则说明|并且满足|跳出循环|的类型是|不属于|时重复|任务组|公开|内部|定义|为|如果|否则|遍历|记作|当|尝试|捕获|最终|要求|匹配|其他|测试|结构|返回|抛出|全局|引入|从|结束|类型是|输出|输入)"},
+    {"name": "keyword.other.hengshu", "match": "(?:自己|的|之)"},
+    {"name": "constant.language.hengshu", "match": "(?:是|否|空)"},
+    {"name": "support.function.hengshu", "match": "(?<=引入\\s)[\\p{L}_][\\p{L}\\p{N}_]*|[\\p{L}_][\\p{L}\\p{N}_]*(?=\\s*[（(])"},
+    {"name": "constant.numeric.hengshu", "match": "(?<![\\p{L}\\p{N}_])-?\\d+(?:\\.\\d+)?"},
+    {"name": "keyword.operator.hengshu", "match": "(?:>=|<=|!=|==|=|>|<|\\+|-|\\*|/|%|\\^|且|或|非|属于|不属于)"}
+  ]
+}

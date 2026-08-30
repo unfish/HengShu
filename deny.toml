@@ -1,0 +1,45 @@
+[advisories]
+yanked = "deny"
+ignore = [
+    # paste 仅由 parquet/simba 间接使用，等待上游迁移到受维护实现。
+    "RUSTSEC-2024-0436",
+    # quick-xml 0.30 只经 Linux 无障碍栈 accesskit -> atspi -> zbus -> zbus_xml 进入
+    # 锁文件，用于解析本机 D-Bus introspection XML，不接触用户数据；项目自己解析
+    # OOXML 的直接依赖已升级到 0.41。退出条件：accesskit/atspi 升级 zbus。
+    "RUSTSEC-2026-0194",
+    "RUSTSEC-2026-0195",
+    # bincode 仅由 printpdf 的兼容序列化路径间接使用，等待上游迁移。
+    "RUSTSEC-2025-0141",
+    # 以下三项是 printpdf 字体/SVG 传递栈的停止维护公告。当前均无安全漏洞和
+    # 退出条件为 printpdf 升级并迁移到仍在维护的字体依赖。
+    "RUSTSEC-2026-0192",
+    "RUSTSEC-2026-0206",
+]
+
+[licenses]
+confidence-threshold = 0.8
+allow = [
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "0BSD",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    # libbz2-rs-sys 随 zip 的 bzip2 特性进入依赖树，calamine 与 rust_xlsxwriter
+    # 共用同一个 zip，特性统一后无法单独关闭；该许可证为 BSD 风格，允许再分发。
+    "bzip2-1.0.6",
+    "CC0-1.0",
+    "CDLA-Permissive-2.0",
+    "ISC",
+    "MIT",
+    "MPL-2.0",
+    "Unicode-3.0",
+    "Zlib",
+]
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"

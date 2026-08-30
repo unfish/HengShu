@@ -1,0 +1,12 @@
+{
+  "code": 200,
+  "data": {
+    "lt": 15,
+    "deliveryLT": 19,
+    "skuDeliveryDate": "2026-09-05",
+    "skuArrivalDate": "2026-09-06",
+    "statusSignDesc": "订货",
+    "abLtDesc": "19个自然日发货，预计09月06日送达"
+  },
+  "success": true
+}

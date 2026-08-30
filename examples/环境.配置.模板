@@ -1,0 +1,6 @@
+# 复制为 examples/环境.配置 后填写真实值；该文件不会被提交。
+# 默认示例使用 模拟/离线，不需要 API Key。
+HENGSHU_AI_BASE_URL=https://api.openai.com/v1
+HENGSHU_AI_MODEL_NAME=gpt-4.1-mini
+HENGSHU_AI_API_KEY=请填入真实密钥
+# 可选：自建兼容服务使用 HENGSHU_AI_API_KEY_ENV 指向其他环境变量。

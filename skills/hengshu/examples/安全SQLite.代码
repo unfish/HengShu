@@ -1,0 +1,8 @@
+引入 数据库
+
+定义 连接 为 数据库 打开SQLite("财务.db")
+连接 开始事务()
+连接 批量执行("INSERT INTO sales(region, amount) VALUES (?, ?)", [["华东", 100], ["华南", 120]])
+连接 提交()
+定义 结果 为 连接 查询("SELECT region, amount FROM sales WHERE amount >= ?", [100])
+输出(结果)

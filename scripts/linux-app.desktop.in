@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=__APP_NAME__
+Exec=__APP_NAME__
+Terminal=false
+Categories=Office;
