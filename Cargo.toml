@@ -30,7 +30,7 @@ required-features = ["gui"]
 [dependencies]
 calamine = "0.36"
 arrow-array = "57"
-arrow-schema = "57"
+arrow-schema = "59"
 chrono = "0.4"
 chrono-tz = "0.10"
 base64 = "0.22"
