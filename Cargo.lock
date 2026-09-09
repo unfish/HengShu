@@ -3656,7 +3656,7 @@ version = "0.9.0"
 dependencies = [
  "arrow-array",
  "arrow-schema",
- "base64 0.22.1",
+ "base64 0.23.1",
  "calamine",
  "chrono",
  "chrono-tz",
