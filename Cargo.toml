@@ -54,7 +54,7 @@ rand = "0.8"
 rayon = "1.10"
 regex = "1"
 scraper = "0.27"
-rusqlite = { version = "0.32", features = ["bundled", "limits"] }
+rusqlite = { version = "0.40", features = ["bundled", "limits"] }
 rust_decimal = { version = "1.36", features = ["maths", "serde-with-str"] }
 rust_xlsxwriter = "0.98"
 serde = { version = "1", features = ["derive"] }
