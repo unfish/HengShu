@@ -40,8 +40,8 @@ encoding_rs = "0.8"
 gpui-kit = { version = "0.6.1", optional = true }
 flate2 = "1"
 hmac = "0.12"
-image = { version = "=0.25.8", default-features = false, features = ["jpeg", "png", "webp"] }
-lettre = { version = "=0.11.22", default-features = false, features = ["builder", "smtp-transport", "rustls-tls"] }
+image = { version = "=0.25.10", default-features = false, features = ["jpeg", "png", "webp"] }
+lettre = { version = "=0.11.23", default-features = false, features = ["builder", "smtp-transport", "rustls-tls"] }
 minilp = "0.2"
 nalgebra = "0.33"
 notify = { version = "8.2", default-features = false, features = ["macos_fsevent"] }
@@ -68,7 +68,7 @@ tar = "0.4"
 tempfile = "3.14"
 toml = "0.8"
 tungstenite = "0.26"
-unicode-normalization = "=0.1.24"
+unicode-normalization = "=0.1.26"
 ureq = { version = "2.12", features = ["json"] }
 url = "2"
 wait-timeout = "0.2"
